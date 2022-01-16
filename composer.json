@@ -26,7 +26,10 @@
         "quillstack/unit-tests": "^0.2.15"
     },
     "require": {
-        "psr/log": "^3.0"
+        "ext-json": "*",
+        "psr/log": "^3.0",
+        "quillstack/di": "^0.0.8",
+        "quillstack/local-storage": "^0.0.6"
     },
     "extra": {
         "branch-alias": {
