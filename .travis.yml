@@ -1,0 +1,18 @@
+language: php
+sudo: false
+php:
+    - 8.0
+cache:
+    directories:
+        - $HOME/.composer/cache
+addons:
+    sonarcloud:
+        organization: "quillstack"
+        token:
+            secure: "WkeeamNdsZKJcxrPBy7/56U3ET2wQus3hupj8kXNqGsaIw/NQEMaiY4k/R6xOMycWaCLxTY8ZgHcFNHJ7w5AkH2sCgG/cVC8h0kfMPr1P606QSr9lqHG2BTSCMlj+YQBtr9515UR4Qvcr7Cy4mBsnXeNEsfSQNQvsNFe7VCUS7sGoPK8F8ue2YHIfTBLa/QnG9UN2fEJ979p4zd/3yquGqiKAopV5BoQ5GRRQYnH4Fn93+mc2YKIgj616bzwXZDkZ5wZ9cuR34eyEu7JPt8fcglnas20mrUtfjClWO6YK4Y7MQKaC0/+8QBth5L4SUPwngY5xTeBIwkkY/gnC9KSh5/LS+bPID4Ptl5VMw/g23x4m3K4zzrwufUyQMedFzKf7emXr+p7+NIk0KemgrV5I0da4+ckpO8YYuYpZdKKZhJCC4PDqSWoIXN/qK6cQojFQG/xCLctoWuVKwfLDOJKY53sW6zZZR+w/EvfXNIO25wi2+08Wg1HHWX99g9OA946OoCLS3xnCF37m2nxji63QnJpz7C85aTS9lm+jsi50EcE57dRZ/vjaQrCdosFVBDyaKqs6i/RNN2Tf/5wmzKD8/oU8FUAL3Pl01Z+e7dKlkLrdQDrjbpGCA3gog5YUlcEbQr/NwsLG/HrFeky5rD57bREETS5IEPPFU7HJpCc+Jw="
+git:
+    depth: false
+install: composer update --no-interaction --no-suggest --no-progress
+script:
+    - phpdbg -qrr ./vendor/bin/unit-tests
+    - sonar-scanner

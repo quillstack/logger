@@ -1,0 +1,36 @@
+{
+    "name": "quillstack/logger",
+    "description": "A simple logger based on PSR-3: Logger Interface.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "logger",
+        "psr-3",
+        "php8"
+    ],
+    "homepage": "https://quillstack.org/logger",
+    "authors": [
+        {
+            "name": "Radek Ziemniewicz",
+            "email": "radek@quillstack.org"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Quillstack\\Logger\\": "src/",
+            "Quillstack\\Logger\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "quillstack/unit-tests": "^0.2.15"
+    },
+    "require": {
+        "psr/log": "^3.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}
