@@ -18,7 +18,10 @@
     ],
     "require": {
         "php": "^8.0",
-        "psr/log": "^3.0"
+        "ext-json": "*",
+        "psr/log": "^3.0",
+        "quillstack/storage-interface": "^0.1",
+        "quillstack/local-storage": "^0.1"
     },
     "require-dev": {
         "quillstack/unit-tests": "^0.4"
@@ -28,6 +31,10 @@
             "Quillstack\\Logger\\": "src/",
             "Quillstack\\Logger\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "unit-tests",
+        "test:coverage": "phpdbg -qrr ./vendor/bin/unit-tests"
     },
     "extra": {
         "branch-alias": {
