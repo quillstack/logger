@@ -1,6 +1,6 @@
 # Quillstack Logger
 
-[![Build Status](https://app.travis-ci.com/quillstack/logger.svg?branch=main)](https://app.travis-ci.com/quillstack/logger)
+[![Tests](https://github.com/quillstack/logger/actions/workflows/tests.yml/badge.svg)](https://github.com/quillstack/logger/actions/workflows/tests.yml)
 
 A simple logger based on PSR-3: Logger Interface.
 

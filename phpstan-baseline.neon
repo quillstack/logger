@@ -1,0 +1,37 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Quillstack\\Logger\\HandlerInterface\:\:log\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/HandlerInterface.php
+
+		-
+			message: '#^Method Quillstack\\Logger\\HandlerInterface\:\:log\(\) has parameter \$level with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/HandlerInterface.php
+
+		-
+			message: '#^Method Quillstack\\Logger\\Handlers\\StorageHandler\:\:format\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Handlers/StorageHandler.php
+
+		-
+			message: '#^Method Quillstack\\Logger\\Handlers\\StorageHandler\:\:format\(\) has parameter \$level with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Handlers/StorageHandler.php
+
+		-
+			message: '#^Method Quillstack\\Logger\\Handlers\\StorageHandler\:\:log\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Handlers/StorageHandler.php
+
+		-
+			message: '#^Method Quillstack\\Logger\\Handlers\\StorageHandler\:\:log\(\) has parameter \$level with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Handlers/StorageHandler.php
