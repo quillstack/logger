@@ -22,7 +22,7 @@ class StorageHandler implements HandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function log($level, Stringable|string $message, array $context = []): bool
+    public function log(mixed $level, Stringable|string $message, array $context = []): bool
     {
         return $this->storage->add(
             $this->path,
@@ -32,10 +32,12 @@ class StorageHandler implements HandlerInterface
 
     /**
      * One entry per line: when it happened, at which level, and what was passed along.
+     *
+     * @param array<string, mixed> $context
      */
-    private function format($level, Stringable|string $message, array $context): string
+    private function format(mixed $level, Stringable|string $message, array $context): string
     {
-        $line = date('c') . ' ' . $level . ': ' . $message;
+        $line = date('c') . ' ' . (is_scalar($level) ? (string) $level : '') . ': ' . $message;
 
         if ($context !== []) {
             $line .= ' ' . json_encode($context);
