@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "psr/log": "^3.0",
         "quillstack/storage-interface": "^0.1",
