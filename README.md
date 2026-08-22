@@ -1,6 +1,11 @@
 # Quillstack Logger
 
 [![Tests](https://github.com/quillstack/logger/actions/workflows/tests.yml/badge.svg)](https://github.com/quillstack/logger/actions/workflows/tests.yml)
+[![Latest Version](https://img.shields.io/packagist/v/quillstack/logger.svg)](https://packagist.org/packages/quillstack/logger)
+[![Downloads](https://img.shields.io/packagist/dt/quillstack/logger.svg)](https://packagist.org/packages/quillstack/logger)
+[![PHP Version](https://img.shields.io/packagist/php-v/quillstack/logger)](https://packagist.org/packages/quillstack/logger)
+[![StyleCI](https://github.styleci.io/repos/448654887/shield?branch=main)](https://github.styleci.io/repos/448654887?branch=main)
+[![License](https://img.shields.io/packagist/l/quillstack/logger)](https://github.com/quillstack/logger/blob/main/LICENSE)
 
 A simple logger based on PSR-3: Logger Interface.
 
