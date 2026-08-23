@@ -19,17 +19,32 @@ Full documentation: https://quillstack.org/logger
 Somewhere to write what happened, and a way to say how much of it is worth writing. A handler
 decides where the entries go; there is no formatter to configure and no processor to register.
 
-### Requirements
+## Why this exists
+
+PSR-3 is eight methods and an interface. Monolog is the answer everybody uses, and it is a good
+one — but it is 34 files and a formatter-and-processor architecture for what an API usually
+needs, which is a line in a file saying what happened.
+
+This is that: a level, a message, whatever was passed alongside, and a handler that is one
+method. **Placeholders are filled in**, which PSR-3 §1.2 describes and which Monolog leaves to a
+processor you have to add. Where you want somewhere else to write, a handler is a class with a
+`log()` method and nothing else.
+
+It was written to take the last third-party implementation out of this framework. Everything
+else here already spoke to interfaces; the logger was the one place a concrete outside package
+was still doing the work.
+
+## Requirements
 
 - PHP 8.1 or newer
 
-### Installation
+## Installation
 
 ```shell
 composer require quillstack/logger
 ```
 
-### Usage
+## Usage
 
 ```php
 use Quillstack\LocalStorage\LocalStorage;
@@ -120,7 +135,7 @@ $app = new App(__DIR__ . '/../.env', [
 
 Anything asking for a logger then has one, and the error middleware writes to it.
 
-### Technical documentation
+## Technical documentation
 
 | Class | What it is |
 | --- | --- |
@@ -131,7 +146,39 @@ Anything asking for a logger then has one, and the error middleware writes to it
 | `Exceptions\UnknownLevelException` | a `Psr\Log\InvalidArgumentException` |
 | `Exceptions\HandlerNotSetException` | there is nowhere to write |
 
-### Unit tests
+## Benchmark
+
+Measured with [quillstack/benchmark](https://github.com/quillstack/benchmark) on a thousand
+entries written to a file, each with two placeholders and a context of two values. Both write
+the same thousand lines. Runs are interleaved and unconcurrent, each figure is the median of
+five, and PHP is 8.5.7.
+
+| | Version |
+| --- | --- |
+| quillstack/logger | v0.7.0 |
+| monolog/monolog | 3.10.0 |
+
+| | Per entry | Relative |
+| --- | --- | --- |
+| monolog/monolog | 7.7 µs | 0.33× |
+| monolog/monolog, with locking | 8.7 µs | 0.37× |
+| **quillstack/logger** | **23.6 µs** | — |
+
+**Monolog is three times faster and the reason is not subtle.** Its stream handler opens the
+file once and holds it; the handler here goes through
+[quillstack/storage-interface](https://github.com/quillstack/storage-interface), which knows how
+to put contents at a path and has no notion of a handle held open — so every entry is an open, a
+lock, a write and a close.
+
+The locking is not the cost: Monolog with `useLocking` on is 8.7 µs, so the extra microsecond is
+the lock and the other fifteen are the file. What the abstraction buys is that the same handler
+writes to anything a `StorageInterface` is implemented for, and what it costs is on the third
+row.
+
+At sixteen microseconds a line, a request writing a hundred log entries spends 1.6 ms more than
+it would on Monolog. If that matters to your application, it matters — and Monolog is very good.
+
+## Tests
 
 ```shell
 composer test
@@ -139,13 +186,16 @@ composer test:coverage
 composer stan
 ```
 
-### Docker
+## The rest of Quillstack
 
-```shell
-docker-compose up -d
-docker exec -w /var/www/html -it quillstack_logger sh
-```
+This is one component of [Quillstack](https://github.com/quillstack), a PHP framework which is
+as simple to use as it is strict about what it does.
 
-### License
+- [quillstack/storage-interface](https://github.com/quillstack/storage-interface) — where entries are written through
+- [quillstack/local-storage](https://github.com/quillstack/local-storage) — the implementation that writes files
+- [quillstack/output](https://github.com/quillstack/output) — what colours the console handler
+- [quillstack/framework](https://github.com/quillstack/framework) — where a logger is wired in
+
+## License
 
 MIT. See [LICENSE](LICENSE).
