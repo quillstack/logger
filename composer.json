@@ -9,7 +9,7 @@
         "psr-3",
         "php8"
     ],
-    "homepage": "https://quillstack.org/logger",
+    "homepage": "https://quillstack.org/packages/logger",
     "authors": [
         {
             "name": "Radek Ziemniewicz",
