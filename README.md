@@ -6,6 +6,11 @@
 [![PHP Version](https://img.shields.io/packagist/php-v/quillstack/logger)](https://packagist.org/packages/quillstack/logger)
 [![StyleCI](https://github.styleci.io/repos/448654887/shield?branch=main)](https://github.styleci.io/repos/448654887?branch=main)
 [![CodeFactor](https://www.codefactor.io/repository/github/quillstack/logger/badge)](https://www.codefactor.io/repository/github/quillstack/logger)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=quillstack_logger&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=quillstack_logger)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_logger&metric=coverage)](https://sonarcloud.io/summary/new_code?id=quillstack_logger)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=quillstack_logger&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_logger)
+[![Reliability](https://sonarcloud.io/api/project_badges/measure?project=quillstack_logger&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_logger)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=quillstack_logger&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=quillstack_logger)
 [![License](https://img.shields.io/packagist/l/quillstack/logger)](https://github.com/quillstack/logger/blob/main/LICENSE)
 
 A simple logger based on PSR-3: Logger Interface.
