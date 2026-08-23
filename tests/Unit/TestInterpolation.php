@@ -87,7 +87,7 @@ class TestInterpolation
 
     public function somethingWhichCanSayWhatItIsSaysIt()
     {
-        $stringable = new class {
+        $stringable = new class () {
             public function __toString(): string
             {
                 return 'said so';
