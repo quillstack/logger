@@ -105,8 +105,16 @@ terminal both get the entry.
 
 | Handler | Writes |
 | --- | --- |
-| `Handlers\StorageHandler` | through any [storage](https://github.com/quillstack/storage-interface) — a file, or wherever else one is implemented |
+| `Handlers\FileHandler` | to a local file, keeping it open — the fastest way, and the usual one |
+| `Handlers\StorageHandler` | through any [storage](https://github.com/quillstack/storage-interface) — anywhere one is implemented |
 | `Handlers\ConsoleHandler` | where a person watching can see it, coloured by level |
+
+```php
+$logger->setHandler(new FileHandler('/var/log/app.log'));
+```
+
+Use `StorageHandler` where entries go somewhere that is not a local file; `FileHandler` is nine
+times faster where they do, and the [benchmark](#benchmark) says why.
 
 A handler is one method, so somewhere else to write is one class:
 
@@ -149,34 +157,40 @@ Anything asking for a logger then has one, and the error middleware writes to it
 ## Benchmark
 
 Measured with [quillstack/benchmark](https://github.com/quillstack/benchmark) on a thousand
-entries written to a file, each with two placeholders and a context of two values. Both write
-the same thousand lines. Runs are interleaved and unconcurrent, each figure is the median of
-five, and PHP is 8.5.7.
+entries written to a file, each with two placeholders and a context of two values. All of them
+write the same thousand lines. Runs are interleaved and unconcurrent, each figure is the median
+of five, and PHP is 8.5.7.
 
 | | Version |
 | --- | --- |
-| quillstack/logger | v0.7.0 |
+| quillstack/logger | v0.8.0 |
 | monolog/monolog | 3.10.0 |
 
 | | Per entry | Relative |
 | --- | --- | --- |
-| monolog/monolog | 7.7 µs | 0.33× |
-| monolog/monolog, with locking | 8.7 µs | 0.37× |
-| **quillstack/logger** | **23.6 µs** | — |
+| **`FileHandler`** | **2.51 µs** | — |
+| `FileHandler`, with locking | 3.19 µs | 1.3× |
+| monolog/monolog | 7.69 µs | 3.1× |
+| monolog/monolog, with locking | 8.36 µs | 3.3× |
+| `StorageHandler` | 22.37 µs | 8.9× |
 
-**Monolog is three times faster and the reason is not subtle.** Its stream handler opens the
-file once and holds it; the handler here goes through
+Two things in that table are worth reading rather than skipping.
+
+**The last row is this package's other handler**, and the nine-fold difference is the whole
+reason `FileHandler` exists. `StorageHandler` writes through
 [quillstack/storage-interface](https://github.com/quillstack/storage-interface), which knows how
-to put contents at a path and has no notion of a handle held open — so every entry is an open, a
-lock, a write and a close.
+to put contents at a path and nothing about a handle held open — so every entry is an open, a
+lock, a write and a close. That is worth paying where entries go somewhere that is not a local
+file. Where they go to a local file, it is not.
 
-The locking is not the cost: Monolog with `useLocking` on is 8.7 µs, so the extra microsecond is
-the lock and the other fifteen are the file. What the abstraction buys is that the same handler
-writes to anything a `StorageInterface` is implemented for, and what it costs is on the third
-row.
+**And the gap to Monolog is not cleverness.** Monolog builds a `LogRecord`, runs it through
+whatever processors are registered, and formats it with a configurable format string; this
+concatenates a date, a level and a message. Three times the speed is what a fixed line format
+costs Monolog to be configurable, and if you want a different one, Monolog is where you get it.
 
-At sixteen microseconds a line, a request writing a hundred log entries spends 1.6 ms more than
-it would on Monolog. If that matters to your application, it matters — and Monolog is very good.
+Locking is optional here because the file is opened for appending, and on a local filesystem the
+kernel makes a single small append atomic. Where that does not hold — a file on NFS — pass
+`locking: true` and pay the two thirds of a microsecond.
 
 ## Tests
 
